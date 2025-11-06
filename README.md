@@ -1,8 +1,11 @@
-# one-time-token-session
+# BetterAuth/plugin: one-time-token-session 
 
-A lightweight one-time token plugin for the Better Auth framework that generates temporary tokens for existing authenticated sessions. Unlike the official one-time-token plugin, this plugin doesn't require additional database tables and works with the existing verification system.
+A lightweight one-time token plugin for the Better Auth framework that generates temporary tokens for existing authenticated sessions. 
 
-**Note:** This plugin requires an existing authenticated session to generate tokens. By default, verifying a token creates a new session (`createSession: true`).
+And by default, verifying a token creates a new session (`createSession: true`).
+Which automatically sync the useSession() state, so your project auth is simplified! 
+
+So you can transfer login state while not facing with same cookie issues.
 
 ## Key Differences from Official Plugin
 
@@ -11,51 +14,19 @@ A lightweight one-time token plugin for the Better Auth framework that generates
 - **Simpler Setup**: No additional database migrations required
 - **Lightweight**: Minimal configuration and setup
 
+## Very simple DEMO
+
+Note we send the generated token via URL protocol! So in the app we simply verify the token and gets the user session! ;)
+
 ## Installation
 
 ```bash
-npm install better-auth
+npm install better-auth-one-time-token-session
 ```
 
 ## Your Plugin is Ready! 🎉
-
-Your current implementation is already a complete Better Auth plugin. Users can:
-
-### Use it directly from Better Auth:
-```typescript
-import { betterAuth } from "better-auth";
-import { createAuthClient } from "better-auth/client";
-import { oneTimeTokenSession } from "better-auth/plugins/one-time-token-session";
-import { oneTimeTokenSessionClient } from "better-auth/plugins/one-time-token-session/client";
-
-// Server
-const auth = betterAuth({
-  plugins: [oneTimeTokenSession()]
-});
-
-// Client
-const authClient = createAuthClient({
-  plugins: [oneTimeTokenSessionClient()]
-});
-```
-
-### Or as a standalone package:
-```typescript
-import { oneTimeTokenSession } from "better-auth-one-time-token-session";
-```
-
-## File Structure
-
-The plugin consists of:
-- `index.ts` - Main plugin implementation
-- `client.ts` - Client-side plugin
-- `utils.ts` - Utility functions
-- `README.md` - Documentation
-- `one-time-token.test.ts` - Test suite
-
 ## Usage
-
-### Basic Setup
+### Server Setup
 
 ```typescript
 import { betterAuth } from "better-auth"
@@ -101,16 +72,12 @@ oneTimeTokenSession({
 
 ```typescript
 // Server
-const { token } = await auth.api.generateOneTimeToken({
-    headers: { /* session headers */ }
-})
+const { data } = await auth.api.generateOneTimeToken({})
+data.token
 
-// Client
-const { token } = await authClient.oneTimeToken.generate({
-    fetchOptions: {
-        headers: { /* session headers */ }
-    }
-})
+// Client  (recommended)
+const { data } = await authClient.oneTimeTokenSession.generate({})
+data.token
 ```
 
 ### Verify Token
@@ -118,12 +85,11 @@ const { token } = await authClient.oneTimeToken.generate({
 
 ```typescript
 // Server
-const { session, user, token } = await auth.api.verifyOneTimeToken({
-    body: { token: "abc123" }
-})
+const response = await auth.api.verifyOneTimeToken({})
+const { session, user, token } = response.data
 
-// Client
-const response = await authClient.oneTimeToken.verify({ token: "abc123" })
+// Client  (recommended)
+const response = await authClient.oneTimeTokenSession.verify({ token: "abc123" })
 ```
 
 ## Configuration Options
@@ -139,7 +105,7 @@ const response = await authClient.oneTimeToken.verify({ token: "abc123" })
 ## Use Cases
 
 - **Session Transfer**: Move authenticated session to another device/browser
-- **Temporary Links**: Generate short-lived access links for authenticated users
+- **Temporary token**: Generate short-lived access token for authenticated users
 - **API Handoff**: Transfer session context to external services
 - **Mobile Deep Links**: Authenticate mobile app from web session
 
