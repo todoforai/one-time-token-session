@@ -1,6 +1,6 @@
 import { APIError } from "better-call";
 import { describe, expect, it, vi } from "vitest";
-import { getTestInstance } from "../../test-utils/test-instance";
+import { getTestInstance } from "../../../test-utils/test-instance";
 import { oneTimeTokenSession } from ".";
 import { oneTimeTokenSessionClient } from "./client";
 import { defaultKeyHasher } from "./utils";

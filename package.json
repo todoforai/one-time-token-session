@@ -1,0 +1,51 @@
+{
+  "name": "better-auth-one-time-token-session",
+  "version": "1.0.0",
+  "description": "One-time token session plugin for Better Auth",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./client": {
+      "import": "./dist/client.js",
+      "require": "./dist/client.js",
+      "types": "./dist/client.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "better-auth": ">=0.1.0",
+    "zod": ">=3.0.0"
+  },
+  "devDependencies": {
+    "better-auth": "^0.1.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0",
+    "zod": "^3.22.0"
+  },
+  "keywords": [
+    "better-auth",
+    "plugin",
+    "one-time-token",
+    "session",
+    "authentication"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/better-auth-one-time-token-session"
+  }
+}

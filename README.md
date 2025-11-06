@@ -17,6 +17,42 @@ A lightweight one-time token plugin for the Better Auth framework that generates
 npm install better-auth
 ```
 
+## Your Plugin is Ready! 🎉
+
+Your current implementation is already a complete Better Auth plugin. Users can:
+
+### Use it directly from Better Auth:
+```typescript
+import { betterAuth } from "better-auth";
+import { createAuthClient } from "better-auth/client";
+import { oneTimeTokenSession } from "better-auth/plugins/one-time-token-session";
+import { oneTimeTokenSessionClient } from "better-auth/plugins/one-time-token-session/client";
+
+// Server
+const auth = betterAuth({
+  plugins: [oneTimeTokenSession()]
+});
+
+// Client
+const authClient = createAuthClient({
+  plugins: [oneTimeTokenSessionClient()]
+});
+```
+
+### Or as a standalone package:
+```typescript
+import { oneTimeTokenSession } from "better-auth-one-time-token-session";
+```
+
+## File Structure
+
+The plugin consists of:
+- `index.ts` - Main plugin implementation
+- `client.ts` - Client-side plugin
+- `utils.ts` - Utility functions
+- `README.md` - Documentation
+- `one-time-token.test.ts` - Test suite
+
 ## Usage
 
 ### Basic Setup
