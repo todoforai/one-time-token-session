@@ -1,6 +1,8 @@
 # one-time-token-session
 
-A lightweight one-time token plugin for Better Auth that generates temporary tokens for existing sessions. Unlike the official one-time-token plugin, this plugin doesn't require additional database tables and works with the existing verification system.
+A lightweight one-time token plugin for the Better Auth framework that generates temporary tokens for existing authenticated sessions. Unlike the official one-time-token plugin, this plugin doesn't require additional database tables and works with the existing verification system.
+
+**Note:** This plugin requires an existing authenticated session to generate tokens. By default, verifying a token creates a new session (`createSession: true`).
 
 ## Key Differences from Official Plugin
 
@@ -21,11 +23,12 @@ npm install better-auth
 
 ```typescript
 import { betterAuth } from "better-auth"
-import { oneTimeToken } from "better-auth/plugins/one-time-token-session"
+import { oneTimeTokenSession } from "better-auth/plugins/one-time-token-session"
 
 export const auth = betterAuth({
+    // ... other config options
     plugins: [
-        oneTimeToken()
+        oneTimeTokenSession()
     ]
 })
 ```
@@ -34,11 +37,12 @@ export const auth = betterAuth({
 
 ```typescript
 import { createAuthClient } from "better-auth/client"
-import { oneTimeTokenClient } from "better-auth/plugins/one-time-token-session/client"
+import { oneTimeTokenSessionClient } from "better-auth/plugins/one-time-token-session/client"
 
 export const authClient = createAuthClient({
+    // ... other config options
     plugins: [
-        oneTimeTokenClient()
+        oneTimeTokenSessionClient()
     ]
 })
 ```
@@ -46,7 +50,7 @@ export const authClient = createAuthClient({
 ## Configuration Options
 
 ```typescript
-oneTimeToken({
+oneTimeTokenSession({
     expiresIn: 5,              // Token expires in 5 minutes (default: 3)
     disableClientRequest: true, // Server-only token generation (default: false)
     createSession: false,       // Don't create new session on verify (default: true)
@@ -54,17 +58,23 @@ oneTimeToken({
 })
 ```
 
-## API Endpoints
+## API Methods
 
 ### Generate Token
-**Requires existing session**
+**Requires existing authenticated session**
 
 ```typescript
 // Server
-const { token } = await auth.api.generateOneTimeToken({ headers })
+const { token } = await auth.api.generateOneTimeToken({
+    headers: { /* session headers */ }
+})
 
-// Client  
-const { token } = await authClient.oneTimeToken.generate()
+// Client
+const { token } = await authClient.oneTimeToken.generate({
+    fetchOptions: {
+        headers: { /* session headers */ }
+    }
+})
 ```
 
 ### Verify Token
@@ -80,14 +90,15 @@ const { session, user, token } = await auth.api.verifyOneTimeToken({
 const response = await authClient.oneTimeToken.verify({ token: "abc123" })
 ```
 
-## Configuration
+## Configuration Options
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `expiresIn` | `3` | Token expiration in minutes |
-| `disableClientRequest` | `false` | Block client-side token generation |
-| `createSession` | `true` | Create new session when verifying |
-| `storeToken` | `"plain"` | Token storage: `"plain"`, `"hashed"`, or custom hasher |
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `expiresIn` | `number` | `3` | Token expiration time in minutes |
+| `disableClientRequest` | `boolean` | `false` | Only allow server-initiated token generation |
+| `createSession` | `boolean` | `true` | Create new session when verifying token |
+| `storeToken` | `"plain" \| "hashed" \| CustomHasher` | `"plain"` | How tokens are stored in database |
+| `generateToken` | `function` | `undefined` | Custom token generation function |
 
 ## Use Cases
 
@@ -96,9 +107,12 @@ const response = await authClient.oneTimeToken.verify({ token: "abc123" })
 - **API Handoff**: Transfer session context to external services
 - **Mobile Deep Links**: Authenticate mobile app from web session
 
-## Security
+## Security Notes
 
-- Tokens are single-use and auto-deleted after verification
+- Tokens are single-use and automatically deleted after verification
 - Expired tokens are automatically cleaned up
 - Uses existing Better Auth verification system
 - No additional attack surface from new database tables
+- Use `storeToken: "hashed"` for additional security in production
+- Consider setting `disableClientRequest: true` for server-only token generation
+- Default expiration of 3 minutes provides good security/usability balance

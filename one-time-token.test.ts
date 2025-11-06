@@ -1,18 +1,18 @@
 import { APIError } from "better-call";
 import { describe, expect, it, vi } from "vitest";
 import { getTestInstance } from "../../test-utils/test-instance";
-import { oneTimeToken } from ".";
-import { oneTimeTokenClient } from "./client";
+import { oneTimeTokenSession } from ".";
+import { oneTimeTokenSessionClient } from "./client";
 import { defaultKeyHasher } from "./utils";
 
-describe("One-time token", async () => {
+describe("One-time token session", async () => {
 	const { auth, signInWithTestUser, client } = await getTestInstance(
 		{
-			plugins: [oneTimeToken()],
+			plugins: [oneTimeTokenSession()],
 		},
 		{
 			clientOptions: {
-				plugins: [oneTimeTokenClient()],
+				plugins: [oneTimeTokenSessionClient()],
 			},
 		},
 	);
@@ -98,7 +98,7 @@ describe("One-time token", async () => {
 
 	it("should not create new session when createSession is false", async () => {
 		const { auth: authNoSession, signInWithTestUser: signInNoSession } = await getTestInstance({
-			plugins: [oneTimeToken({ createSession: false })],
+			plugins: [oneTimeTokenSession({ createSession: false })],
 		});
 
 		const { headers } = await signInNoSession();
@@ -123,7 +123,7 @@ describe("One-time token", async () => {
 			const { auth, signInWithTestUser, client } = await getTestInstance(
 				{
 					plugins: [
-						oneTimeToken({
+						oneTimeTokenSession({
 							storeToken: "hashed",
 							async generateToken(session, ctx) {
 								return "123456";
@@ -133,7 +133,7 @@ describe("One-time token", async () => {
 				},
 				{
 					clientOptions: {
-						plugins: [oneTimeTokenClient()],
+						plugins: [oneTimeTokenSessionClient()],
 					},
 				},
 			);
@@ -167,7 +167,7 @@ describe("One-time token", async () => {
 		describe("custom hasher", async () => {
 			const { auth, signInWithTestUser, client } = await getTestInstance({
 				plugins: [
-					oneTimeToken({
+					oneTimeTokenSession({
 						storeToken: {
 							type: "custom-hasher",
 							hash: async (token) => {

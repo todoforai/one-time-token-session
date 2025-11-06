@@ -10,7 +10,7 @@ import type { Session, User } from "../../types";
 import { setSessionCookie } from "../../cookies";
 import { defaultKeyHasher } from "./utils";
 
-interface OneTimeTokenOptions {
+export interface OneTimeTokenSessionOptions {
 	/**
 	 * Expires in minutes
 	 *
@@ -54,12 +54,12 @@ interface OneTimeTokenOptions {
 	createSession?: boolean | undefined;
 }
 
-export const oneTimeToken = (options?: OneTimeTokenOptions | undefined) => {
+export const oneTimeTokenSession = (options?: OneTimeTokenSessionOptions | undefined) => {
 	const opts = {
 		storeToken: "plain",
 		createSession: true,
 		...options,
-	} satisfies OneTimeTokenOptions;
+	} satisfies OneTimeTokenSessionOptions;
 
 	async function storeToken(ctx: GenericEndpointContext, token: string) {
 		if (opts.storeToken === "hashed") {
@@ -77,7 +77,7 @@ export const oneTimeToken = (options?: OneTimeTokenOptions | undefined) => {
 	}
 
 	return {
-		id: "one-time-token",
+		id: "one-time-token-session",
 		endpoints: {
 			/**
 			 * ### Endpoint
