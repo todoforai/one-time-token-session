@@ -8,7 +8,7 @@ import { generateRandomString } from "better-auth/crypto";
 import type { Session, User } from "better-auth/types";
 import { setSessionCookie } from "better-auth/cookies";
 import * as z from "zod";
-import { defaultKeyHasher } from "./utils";
+import { defaultKeyHasher } from "./utils.js";
 
 export interface OneTimeTokenSessionOptions {
 	/**
