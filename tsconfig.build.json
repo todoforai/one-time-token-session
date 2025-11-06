@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/client.ts", "src/utils.ts", "index.ts", "client.ts"],
+  "exclude": ["src/index.ts", "src/one-time-token.test.ts", "dist", "node_modules"]
+}
