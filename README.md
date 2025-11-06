@@ -1,11 +1,13 @@
 # BetterAuth/plugin: one-time-token-session 
 
-A lightweight one-time token plugin for the Better Auth framework that generates temporary tokens for existing authenticated sessions. 
+A lightweight one-time token session sharing plugin for the [Better Auth](https://www.better-auth.com/) framework. 
 
 And by default, verifying a token creates a new session (`createSession: true`).
 Which automatically sync the useSession() state, so your project auth is simplified! 
 
 So you can transfer login state while not facing with same cookie issues.
+
+The builtin [BetterAuth/OneTimeToken](https://www.better-auth.com/docs/plugins/one-time-token) doesn't work as simply as I want. So I repaired it. 
 
 ## Key Differences from Official Plugin
 
@@ -118,3 +120,10 @@ const response = await authClient.oneTimeTokenSession.verify({ token: "abc123" }
 - Use `storeToken: "hashed"` for additional security in production
 - Consider setting `disableClientRequest: true` for server-only token generation
 - Default expiration of 3 minutes provides good security/usability balance
+
+## Contributor
+
+https://todofor.ai
+
+
+
