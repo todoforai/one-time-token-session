@@ -1,11 +1,8 @@
-import { base64Url } from "@better-auth/utils/base64";
-import { createHash } from "@better-auth/utils/hash";
+import { createHash } from "crypto";
+
 export const defaultKeyHasher = async (token: string) => {
-	const hash = await createHash("SHA-256").digest(
-		new TextEncoder().encode(token),
-	);
-	const hashed = base64Url.encode(new Uint8Array(hash), {
-		padding: false,
-	});
-	return hashed;
+	const hash = createHash("sha256")
+		.update(token)
+		.digest();
+	return hash.toString("base64url");
 };

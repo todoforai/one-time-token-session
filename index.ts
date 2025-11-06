@@ -219,8 +219,8 @@ export const oneTimeToken = (options?: OneTimeTokenOptions | undefined) => {
 					if (opts.createSession) {
 						// Create a new session
 						const newSession = await c.context.internalAdapter.createSession(
-							session.userId,
-							c,
+							session.session.userId,
+						  c,
 						);
 						
 						// Set session cookie
