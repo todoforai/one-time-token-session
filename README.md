@@ -11,7 +11,7 @@ The builtin [BetterAuth/OneTimeToken](https://www.better-auth.com/docs/plugins/o
 
 ## Key Differences from Official Plugin
 
-- **No Database Schema**: Uses existing verification table instead of dedicated one-time-token table
+- **No Database Schema**: Uses existing verification table
 - **Session-Based**: Generates tokens for existing authenticated sessions
 - **Simpler Setup**: No additional database migrations required
 - **Lightweight**: Minimal configuration and setup
