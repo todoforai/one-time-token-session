@@ -17,6 +17,7 @@ The builtin [BetterAuth/OneTimeToken](https://www.better-auth.com/docs/plugins/o
 - **Lightweight**: Minimal configuration and setup
 
 ## Very simple DEMO
+https://github.com/user-attachments/assets/3d08c374-48e8-4bb2-a444-fe1ba2014821
 
 Note we send the generated token via URL protocol! So in the app we simply verify the token and gets the user session! ;)
 
